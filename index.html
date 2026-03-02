@@ -2,6 +2,258 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<title>Dante – D&D Homebrew Editable</title>
+<style>
+body{background:#0f0f0f;color:white;font-family:Arial;margin:0;}
+header{background:#1a1a1a;padding:20px;text-align:center;border-bottom:3px solid red;}
+nav{background:#151515;padding:10px;text-align:center;}
+nav button{margin:5px;padding:10px;background:red;border:none;border-radius:8px;color:white;cursor:pointer;}
+nav button.active{background:#ff3c3c;}
+.container{padding:30px;}
+.card{background:#1c1c1c;padding:20px;margin-bottom:20px;border-radius:10px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.stat{background:#2a2a2a;padding:15px;border-radius:8px;text-align:center;}
+.section{display:none;}
+.active{display:block;}
+.rank{font-size:45px;text-align:center;color:#ff3c3c;}
+input{padding:6px;margin:3px;border-radius:6px;border:none;}
+button{padding:6px;margin:3px;background:red;border:none;border-radius:6px;color:white;cursor:pointer;}
+.devil{box-shadow:0 0 60px red;}
+.skill{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;padding:4px;}
+.skill input{transform: scale(1.2);}
+.hp-bar{background:#333;border-radius:6px;height:20px;margin:5px 0;}
+.hp-fill{background:#ff3c3c;height:100%;border-radius:6px;width:100%;transition: width 0.3s;}
+.dice-log{max-height:150px;overflow-y:auto;list-style:none;padding:0;margin:10px 0;}
+[contenteditable]{outline:none;}
+</style>
+</head>
+<body>
+
+<header>
+<h1 contenteditable="true" id="charName">Dante – Devil Hunter</h1>
+</header>
+
+<nav>
+<button onclick="showSection('home')">Home</button>
+<button onclick="showSection('stats')">Stats</button>
+<button onclick="showSection('skills')">Skills</button>
+<button onclick="showSection('items')">Items</button>
+<button onclick="showSection('dice')">Dice Roller</button>
+</nav>
+
+<div class="container" id="main">
+
+<!-- HOME -->
+<div id="home" class="section active">
+<div class="card">
+<h2>Grundinfos</h2>
+<p>Name: <span contenteditable="true" id="charNameSpan">Dante</span></p>
+<p>Rasse: <span contenteditable="true" id="race">Nephilim</span></p>
+<p>Klasse: <span contenteditable="true" id="charClass">Devil Hunter</span></p>
+<p>Level: <span contenteditable="true" id="level">1</span></p>
+<p>Proficiency Bonus: <span id="profBonus">+2</span></p>
+</div>
+
+<div class="card">
+<h2>Devil Trigger</h2>
+<button onclick="toggleDevil()">Aktivieren</button>
+<p id="devilText">Status: Normal</p>
+</div>
+
+<div class="card">
+<h2>HP</h2>
+<div class="hp-bar">
+<div class="hp-fill" id="hpFill"></div>
+</div>
+<p>HP: <span contenteditable="true" id="hpCurrent">10</span> / <span contenteditable="true" id="hpMax">10</span></p>
+<button onclick="levelUp()">Level Up</button>
+</div>
+</div>
+
+<!-- STATS -->
+<div id="stats" class="section">
+<div class="card">
+<h2>Attribute + Modifikatoren</h2>
+<div class="stats">
+<div class="stat">STR<br><span contenteditable="true" id="str">14</span><br>Mod: <span id="strMod"></span></div>
+<div class="stat">DEX<br><span contenteditable="true" id="dex">17</span><br>Mod: <span id="dexMod"></span></div>
+<div class="stat">CON<br><span contenteditable="true" id="con">13</span><br>Mod: <span id="conMod"></span></div>
+<div class="stat">INT<br><span contenteditable="true" id="int">15</span><br>Mod: <span id="intMod"></span></div>
+<div class="stat">WIS<br><span contenteditable="true" id="wis">15</span><br>Mod: <span id="wisMod"></span></div>
+<div class="stat">CHA<br><span contenteditable="true" id="cha">16</span><br>Mod: <span id="chaMod"></span></div>
+</div>
+</div>
+</div>
+
+<!-- SKILLS -->
+<div id="skills" class="section">
+<div class="card">
+<h2>Skills (Proficiency + Modifikatoren)</h2>
+<div id="skillList"></div>
+</div>
+
+<div class="card">
+<h2>Style Rank</h2>
+<div class="rank" id="rank">D</div>
+<button onclick="addStyle()">Style +</button>
+<button onclick="resetStyle()">Reset</button>
+</div>
+</div>
+
+<!-- ITEMS -->
+<div id="items" class="section">
+<div class="card">
+<h2>Inventar</h2>
+<input id="itemInput" placeholder="Item eingeben">
+<button onclick="addItem()">Hinzufügen</button>
+<ul id="itemList" contenteditable="true"></ul>
+</div>
+</div>
+
+<!-- DICE ROLLER -->
+<div id="dice" class="section">
+<div class="card">
+<h2>Dice Roller</h2>
+<button onclick="rollDice(4)">d4</button>
+<button onclick="rollDice(6)">d6</button>
+<button onclick="rollDice(8)">d8</button>
+<button onclick="rollDice(10)">d10</button>
+<button onclick="rollDice(12)">d12</button>
+<button onclick="rollDice(20)">d20</button>
+<ul id="diceLog" class="dice-log"></ul>
+</div>
+</div>
+
+</div>
+
+<script>
+/* Navigation */
+function showSection(section){
+document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"));
+document.getElementById(section).classList.add("active");
+document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
+document.querySelector(`nav button[onclick="showSection('${section}')"]`).classList.add("active");
+}
+
+/* Attribute + Mods */
+function calcMod(value){return Math.floor((value-10)/2);}
+let statIDs=["str","dex","con","int","wis","cha"];
+function updateMods(){
+statIDs.forEach(stat=>{
+    let val = parseInt(document.getElementById(stat).innerText)||0;
+    document.getElementById(stat+"Mod").innerText=(calcMod(val)>=0?'+':'')+calcMod(val);
+});
+    renderSkills(); // Skills automatisch neu berechnen
+}
+statIDs.forEach(stat=>{
+    document.getElementById(stat).addEventListener("input",updateMods);
+    document.getElementById(stat).addEventListener("blur",updateMods);
+});
+updateMods();
+
+/* Skills */
+let skillData = [["Akrobatik","dex"],["Athletik","str"],["Arkane Kunde","int"],["Täuschung","cha"],
+["Geschichte","int"],["Einsicht","wis"],["Einschüchtern","cha"],["Untersuchen","int"],
+["Natur","int"],["Wahrnehmung","wis"],["Auftreten","cha"],["Überreden","cha"],
+["Heilkunde","wis"],["Heimlichkeit","dex"],["Überleben","wis"]];
+let skillProficiencies = Array(skillData.length).fill(false);
+function calcSkillMod(statKey, proficient=false){
+    let val = parseInt(document.getElementById(statKey).innerText)||0;
+    let mod = calcMod(val);
+    if(proficient) mod += parseInt(document.getElementById("profBonus").innerText)||0;
+    return mod;
+}
+function renderSkills(){
+    let html = "";
+    skillData.forEach((skill,index)=>{
+        let mod = calcSkillMod(skill[1], skillProficiencies[index]);
+        html += `<div class="skill">
+                    <span>${skill[0]}</span>
+                    <span>${mod>=0?'+':''}${mod}</span>
+                    <input type="checkbox" onchange="toggleProficiency(${index})" ${skillProficiencies[index]?'checked':''}>
+                 </div>`;
+    });
+    document.getElementById("skillList").innerHTML = html;
+}
+function toggleProficiency(index){
+    skillProficiencies[index] = !skillProficiencies[index];
+    renderSkills();
+}
+renderSkills();
+
+/* Style System */
+let style=0; let ranks=["D","C","B","A","S","SS","SSS"];
+function addStyle(){if(style<6) style++; document.getElementById("rank").innerText=ranks[style];}
+function resetStyle(){style=0; document.getElementById("rank").innerText=ranks[style];}
+
+/* Devil Trigger */
+let devilOn=false;
+function toggleDevil(){
+let main=document.getElementById("main"); let text=document.getElementById("devilText");
+devilOn=!devilOn;
+if(devilOn){main.classList.add("devil"); text.innerText="Status: DEVIL TRIGGER";}
+else{main.classList.remove("devil"); text.innerText="Status: Normal";}
+}
+
+/* Items */
+function addItem(){
+let input=document.getElementById("itemInput"); let value=input.value;
+if(value==="") return;
+let li=document.createElement("li"); li.innerText=value;
+document.getElementById("itemList").appendChild(li);
+input.value="";
+}
+
+/* Level-Up + HP */
+function levelUp(){
+let levelSpan=document.getElementById("level");
+let level=parseInt(levelSpan.innerText)||1;
+level++;
+levelSpan.innerText=level;
+
+// Proficiency Bonus
+let prof=2;
+if(level>=1 && level<=4) prof=2;
+else if(level<=8) prof=3;
+else if(level<=12) prof=4;
+else if(level<=16) prof=5;
+else prof=6;
+document.getElementById("profBonus").innerText="+"+prof;
+
+// HP erhöhen
+let con=parseInt(document.getElementById("con").innerText)||0;
+let hpMaxElem=document.getElementById("hpMax");
+let hpCurElem=document.getElementById("hpCurrent");
+let hpMax=parseInt(hpMaxElem.innerText)||10;
+let hpCur=parseInt(hpCurElem.innerText)||hpMax;
+hpMax += 5+calcMod(con);
+hpCur = hpMax;
+hpMaxElem.innerText=hpMax;
+hpCurElem.innerText=hpCur;
+updateHpDisplay();
+renderSkills();
+}
+
+function updateHpDisplay(){
+let hpCur=parseInt(document.getElementById("hpCurrent").innerText)||0;
+let hpMax=parseInt(document.getElementById("hpMax").innerText)||0;
+document.getElementById("hpFill").style.width=(hpCur/hpMax*100)+"%";
+}
+updateHpDisplay();
+
+/* Dice Roller */
+function rollDice(sides){
+let result=Math.floor(Math.random()*sides)+1;
+let log=document.getElementById("diceLog");
+let li=document.createElement("li"); li.innerText=`d${sides}: ${result}`;
+log.appendChild(li); log.scrollTop = log.scrollHeight;
+}
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
 <title>Dante – D&D Homebrew V4 Editable</title>
 <style>
 body{background:#0f0f0f;color:white;font-family:Arial;margin:0;}
