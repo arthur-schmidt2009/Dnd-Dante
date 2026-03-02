@@ -2,43 +2,87 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Dante – D&D Homebrew Charakter</title>
+<title>Dante – D&D Homebrew</title>
 
 <style>
+
 body{
-    background-color:#111;
+    background:#0f0f0f;
     color:white;
     font-family:Arial;
-    margin:40px;
+    margin:0;
 }
 
-h1{
-    color:#ff3c3c;
+header{
+    background:#1a1a1a;
+    padding:20px;
+    text-align:center;
+    border-bottom:3px solid red;
 }
 
-h2{
-    border-bottom:2px solid #ff3c3c;
-    padding-bottom:5px;
+nav{
+    background:#151515;
+    padding:10px;
+    text-align:center;
 }
 
-.box{
+nav button{
+    margin:5px;
+    padding:10px;
+    background:red;
+    border:none;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+}
+
+nav button:hover{
+    background:#ff3c3c;
+}
+
+.container{
+    padding:30px;
+}
+
+.card{
     background:#1c1c1c;
-    padding:15px;
-    margin:20px 0;
+    padding:20px;
+    margin-bottom:20px;
     border-radius:10px;
 }
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(3, 1fr);
+    grid-template-columns:repeat(3,1fr);
     gap:10px;
 }
 
 .stat{
     background:#2a2a2a;
-    padding:10px;
+    padding:15px;
     border-radius:8px;
     text-align:center;
+}
+
+.section{
+    display:none;
+}
+
+.active{
+    display:block;
+}
+
+/* Style Rank */
+.rank{
+    font-size:45px;
+    text-align:center;
+    color:#ff3c3c;
+}
+
+/* Devil Trigger Effekt */
+.devil{
+    box-shadow:0 0 60px red;
+    transition:0.4s;
 }
 
 </style>
@@ -46,66 +90,38 @@ h2{
 
 <body>
 
-<h1>Dante (Tony Redgrave)</h1>
+<header>
+<h1>Dante – Devil Hunter</h1>
+<p>D&D Homebrew Charakter Web App</p>
+</header>
 
-<div class="box">
-<h2>Grundinformationen</h2>
-<p><b>Klasse:</b> Devil Hunter Level 1</p>
+<nav>
+<button onclick="showSection('home')">Home</button>
+<button onclick="showSection('stats')">Stats</button>
+<button onclick="showSection('skills')">Fähigkeiten</button>
+<button onclick="showSection('weapons')">Waffen</button>
+</nav>
+
+<div class="container" id="main">
+
+<!-- HOME -->
+<div id="home" class="section active">
+
+<div class="card">
+<h2>Grundinfos</h2>
+
+<p><b>Name:</b> Dante (Tony Redgrave)</p>
 <p><b>Rasse:</b> Nephilim</p>
+<p><b>Klasse:</b> Devil Hunter</p>
+<p><b>Level:</b> 1</p>
 <p><b>Alignment:</b> Good</p>
 <p><b>Alter:</b> 44</p>
 <p><b>Größe:</b> 1.90m</p>
 <p><b>Gewicht:</b> 85kg</p>
-<p><b>Augen:</b> Blau</p>
-<p><b>Haare:</b> Weiß</p>
-</div>
-
-<div class="box">
-<h2>Attribute</h2>
-
-<div class="stats">
-
-<div class="stat">STR<br>14</div>
-<div class="stat">DEX<br>17</div>
-<div class="stat">CON<br>13</div>
-<div class="stat">INT<br>15</div>
-<div class="stat">WIS<br>15</div>
-<div class="stat">CHA<br>16</div>
-
-</div>
-</div>
-
-<div class="box">
-<h2>Kampfwerte</h2>
-<p>HP: 20</p>
-<p>AC: 14</p>
-<p>Initiative: +2</p>
-<p>Speed: 70ft</p>
-<p>Proficiency Bonus: +2</p>
-</div>
-
-<div class="box">
-<h2>Fähigkeiten & Traits</h2>
-
-<p><b>Aether:</b> (Level × 2) + CON Mod + WIS Mod</p>
-<p><b>Aktuell:</b> 5</p>
-
-<p><b>Devil Trigger:</b> 1 Bar = 2 Runden</p>
-<p><b>Dämonische Regeneration:</b> 1W4 + Level</p>
-<p><b>Dämonensinn</b></p>
-<p><b>Init Vorteil:</b> 3x pro Long Rest</p>
-
-<p><b>Sin Devil Trigger:</b> ab Level 12</p>
 
 </div>
 
-<div class="box">
-<h2>Persönlichkeit</h2>
-<p>Witzig, selbstsicher, spielt mit Gegnern.</p>
-<p><b>Bond:</b> Vergil (Bruder)</p>
-</div>
-
-<div class="box">
+<div class="card">
 <h2>Backstory</h2>
 
 <p>
@@ -119,26 +135,162 @@ Er wird von seinem Bruder Vergil getrennt.
 </p>
 
 <p>
-Dante kämpft später zum Schutz der Menschen gegen Dämonen,
-während Vergil nach Macht strebt.
-</p>
-
-<p>
-Als Erwachsener eröffnet Dante die Dämonenjagd-Agentur „Devil May Cry“.
-</p>
-
-<p>
-In Devil May Cry 5 erwacht seine stärkste Form:
-Sin Devil Trigger.
+Heute arbeitet Dante als Dämonenjäger und schützt die Menschheit.
 </p>
 
 </div>
 
-<div class="box">
-<h2>Ausrüstung</h2>
-<p>Devil Sword</p>
-<p>Ebony & Ivory</p>
+<div class="card">
+<h2>Devil Trigger</h2>
+
+<button onclick="toggleDevil()">Aktivieren</button>
+<p id="devilText">Status: Normal</p>
+
 </div>
+
+</div>
+
+<!-- STATS -->
+<div id="stats" class="section">
+
+<div class="card">
+<h2>Attribute</h2>
+
+<div class="stats">
+<div class="stat">STR<br>14</div>
+<div class="stat">DEX<br>17</div>
+<div class="stat">CON<br>13</div>
+<div class="stat">INT<br>15</div>
+<div class="stat">WIS<br>15</div>
+<div class="stat">CHA<br>16</div>
+</div>
+
+</div>
+
+<div class="card">
+<h2>Kampfwerte</h2>
+
+<p>HP: 20</p>
+<p>AC: 14</p>
+<p>Initiative: +2</p>
+<p>Speed: 70ft</p>
+<p>Proficiency Bonus: +2</p>
+
+</div>
+
+</div>
+
+<!-- SKILLS -->
+<div id="skills" class="section">
+
+<div class="card">
+<h2>Devil Hunter Fähigkeiten</h2>
+
+<p>Aether: 5</p>
+<p>Dämonische Regeneration: 1W4 + Level</p>
+<p>Dämonensinn</p>
+<p>Vorteil auf Initiative (3x pro Long Rest)</p>
+<p>Sin Devil Trigger ab Level 12</p>
+
+</div>
+
+<div class="card">
+<h2>Style Rank</h2>
+
+<div class="rank" id="rank">D</div>
+
+<button onclick="addStyle()">Style erhöhen</button>
+<button onclick="resetStyle()">Reset</button>
+
+</div>
+
+</div>
+
+<!-- WEAPONS -->
+<div id="weapons" class="section">
+
+<div class="card">
+<h2>Devil Sword</h2>
+
+<p>Schaden: 1W10</p>
+<p>Magisch</p>
+<p>Skaliert mit Style Rank</p>
+
+</div>
+
+<div class="card">
+<h2>Ebony & Ivory</h2>
+
+<p>Schaden: 1W8</p>
+<p>Unendliche Munition</p>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* Navigation */
+
+function showSection(section){
+
+let sections = document.querySelectorAll(".section");
+
+sections.forEach(sec => {
+sec.classList.remove("active");
+});
+
+document.getElementById(section).classList.add("active");
+
+}
+
+/* Style System */
+
+let style = 0;
+let ranks = ["D","C","B","A","S","SS","SSS"];
+
+function addStyle(){
+
+if(style < 6){
+style++;
+}
+
+document.getElementById("rank").innerText = ranks[style];
+
+}
+
+function resetStyle(){
+
+style = 0;
+document.getElementById("rank").innerText = ranks[style];
+
+}
+
+/* Devil Trigger */
+
+let devilOn = false;
+
+function toggleDevil(){
+
+let main = document.getElementById("main");
+let text = document.getElementById("devilText");
+
+devilOn = !devilOn;
+
+if(devilOn){
+main.classList.add("devil");
+text.innerText = "Status: DEVIL TRIGGER";
+}
+else{
+main.classList.remove("devil");
+text.innerText = "Status: Normal";
+}
+
+}
+
+</script>
 
 </body>
 </html>
