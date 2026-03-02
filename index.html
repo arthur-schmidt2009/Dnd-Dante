@@ -2,143 +2,35 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Dante – D&D Homebrew V3</title>
-
+<title>Dante – D&D Homebrew V4 Editable</title>
 <style>
-body{
-    background:#0f0f0f;
-    color:white;
-    font-family:Arial;
-    margin:0;
-}
-
-header{
-    background:#1a1a1a;
-    padding:20px;
-    text-align:center;
-    border-bottom:3px solid red;
-}
-
-nav{
-    background:#151515;
-    padding:10px;
-    text-align:center;
-}
-
-nav button{
-    margin:5px;
-    padding:10px;
-    background:red;
-    border:none;
-    border-radius:8px;
-    color:white;
-    cursor:pointer;
-}
-
-nav button.active{
-    background:#ff3c3c;
-}
-
-.container{
-    padding:30px;
-}
-
-.card{
-    background:#1c1c1c;
-    padding:20px;
-    margin-bottom:20px;
-    border-radius:10px;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-}
-
-.stat{
-    background:#2a2a2a;
-    padding:15px;
-    border-radius:8px;
-    text-align:center;
-}
-
-.section{
-    display:none;
-}
-
-.active{
-    display:block;
-}
-
-.rank{
-    font-size:45px;
-    text-align:center;
-    color:#ff3c3c;
-}
-
-input{
-    padding:8px;
-    margin:5px;
-    border-radius:6px;
-    border:none;
-}
-
-button{
-    padding:8px;
-    margin:5px;
-    background:red;
-    border:none;
-    border-radius:6px;
-    color:white;
-    cursor:pointer;
-}
-
-.devil{
-    box-shadow:0 0 60px red;
-}
-
-.skill{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:1px solid #333;
-    padding:4px;
-}
-
-.skill input{
-    transform: scale(1.2);
-}
-
-.hp-bar{
-    background:#333;
-    border-radius:6px;
-    height:20px;
-    margin:5px 0;
-}
-
-.hp-fill{
-    background:#ff3c3c;
-    height:100%;
-    border-radius:6px;
-    width:100%;
-    transition: width 0.3s;
-}
-
-.dice-log{
-    max-height:150px;
-    overflow-y:auto;
-    list-style:none;
-    padding:0;
-    margin:10px 0;
-}
+body{background:#0f0f0f;color:white;font-family:Arial;margin:0;}
+header{background:#1a1a1a;padding:20px;text-align:center;border-bottom:3px solid red;}
+nav{background:#151515;padding:10px;text-align:center;}
+nav button{margin:5px;padding:10px;background:red;border:none;border-radius:8px;color:white;cursor:pointer;}
+nav button.active{background:#ff3c3c;}
+.container{padding:30px;}
+.card{background:#1c1c1c;padding:20px;margin-bottom:20px;border-radius:10px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.stat{background:#2a2a2a;padding:15px;border-radius:8px;text-align:center;}
+.section{display:none;}
+.active{display:block;}
+.rank{font-size:45px;text-align:center;color:#ff3c3c;}
+input{padding:6px;margin:3px;border-radius:6px;border:none;}
+button{padding:6px;margin:3px;background:red;border:none;border-radius:6px;color:white;cursor:pointer;}
+.devil{box-shadow:0 0 60px red;}
+.skill{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #333;padding:4px;}
+.skill input{transform: scale(1.2);}
+.hp-bar{background:#333;border-radius:6px;height:20px;margin:5px 0;}
+.hp-fill{background:#ff3c3c;height:100%;border-radius:6px;width:100%;transition: width 0.3s;}
+.dice-log{max-height:150px;overflow-y:auto;list-style:none;padding:0;margin:10px 0;}
+[contenteditable]{outline:none;}
 </style>
 </head>
-
 <body>
 
 <header>
-<h1>Dante – Devil Hunter</h1>
+<h1 contenteditable="true">Dante – Devil Hunter</h1>
 </header>
 
 <nav>
@@ -155,10 +47,10 @@ button{
 <div id="home" class="section active">
 <div class="card">
 <h2>Grundinfos</h2>
-<p>Name: Dante</p>
-<p>Rasse: Nephilim</p>
-<p>Klasse: Devil Hunter</p>
-<p>Level: <span id="level">1</span></p>
+<p>Name: <span contenteditable="true" id="charName">Dante</span></p>
+<p>Rasse: <span contenteditable="true">Nephilim</span></p>
+<p>Klasse: <span contenteditable="true">Devil Hunter</span></p>
+<p>Level: <span id="level" contenteditable="true">1</span></p>
 <p>Proficiency Bonus: <span id="profBonus">+2</span></p>
 </div>
 
@@ -173,7 +65,7 @@ button{
 <div class="hp-bar">
 <div class="hp-fill" id="hpFill"></div>
 </div>
-<p>HP: <span id="hpCurrent">10</span> / <span id="hpMax">10</span></p>
+<p>HP: <span id="hpCurrent" contenteditable="true">10</span> / <span id="hpMax" contenteditable="true">10</span></p>
 <button onclick="levelUp()">Level Up</button>
 </div>
 </div>
@@ -183,12 +75,12 @@ button{
 <div class="card">
 <h2>Attribute + Modifikatoren</h2>
 <div class="stats">
-<div class="stat">STR<br><span id="str">14</span><br>Mod: <span id="strMod"></span></div>
-<div class="stat">DEX<br><span id="dex">17</span><br>Mod: <span id="dexMod"></span></div>
-<div class="stat">CON<br><span id="con">13</span><br>Mod: <span id="conMod"></span></div>
-<div class="stat">INT<br><span id="int">15</span><br>Mod: <span id="intMod"></span></div>
-<div class="stat">WIS<br><span id="wis">15</span><br>Mod: <span id="wisMod"></span></div>
-<div class="stat">CHA<br><span id="cha">16</span><br>Mod: <span id="chaMod"></span></div>
+<div class="stat">STR<br><span contenteditable="true" id="str">14</span><br>Mod: <span id="strMod"></span></div>
+<div class="stat">DEX<br><span contenteditable="true" id="dex">17</span><br>Mod: <span id="dexMod"></span></div>
+<div class="stat">CON<br><span contenteditable="true" id="con">13</span><br>Mod: <span id="conMod"></span></div>
+<div class="stat">INT<br><span contenteditable="true" id="int">15</span><br>Mod: <span id="intMod"></span></div>
+<div class="stat">WIS<br><span contenteditable="true" id="wis">15</span><br>Mod: <span id="wisMod"></span></div>
+<div class="stat">CHA<br><span contenteditable="true" id="cha">16</span><br>Mod: <span id="chaMod"></span></div>
 </div>
 </div>
 </div>
@@ -214,7 +106,7 @@ button{
 <h2>Inventar</h2>
 <input id="itemInput" placeholder="Item eingeben">
 <button onclick="addItem()">Hinzufügen</button>
-<ul id="itemList"></ul>
+<ul id="itemList" contenteditable="true"></ul>
 </div>
 </div>
 
@@ -235,40 +127,40 @@ button{
 </div>
 
 <script>
-/* Navigation */
+// Navigation
 function showSection(section){
-    document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"));
-    document.getElementById(section).classList.add("active");
-    document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
-    document.querySelector(`nav button[onclick="showSection('${section}')"]`).classList.add("active");
+document.querySelectorAll(".section").forEach(sec=>sec.classList.remove("active"));
+document.getElementById(section).classList.add("active");
+document.querySelectorAll("nav button").forEach(btn => btn.classList.remove("active"));
+document.querySelector(`nav button[onclick="showSection('${section}')"]`).classList.add("active");
 }
 
-/* Attribute + Mods */
-let stats = {str:14,dex:17,con:13,int:15,wis:15,cha:16};
+// Attribute + Mods
 function calcMod(value){return Math.floor((value-10)/2);}
+let stats=["str","dex","con","int","wis","cha"];
 function updateMods(){
-    document.getElementById("strMod").innerText=calcMod(stats.str);
-    document.getElementById("dexMod").innerText=calcMod(stats.dex);
-    document.getElementById("conMod").innerText=calcMod(stats.con);
-    document.getElementById("intMod").innerText=calcMod(stats.int);
-    document.getElementById("wisMod").innerText=calcMod(stats.wis);
-    document.getElementById("chaMod").innerText=calcMod(stats.cha);
+stats.forEach(stat=>{
+    let val = parseInt(document.getElementById(stat).innerText)||0;
+    document.getElementById(stat+"Mod").innerText=(calcMod(val)>=0?'+':'')+calcMod(val);
+});
 }
+stats.forEach(stat=>{
+    document.getElementById(stat).addEventListener("input",updateMods);
+});
 updateMods();
 
-/* Skills + Proficiency */
-let skillData = [
-["Akrobatik","dex"],["Athletik","str"],["Arkane Kunde","int"],["Täuschung","cha"],
+// Skills + Proficiency
+let skillData = [["Akrobatik","dex"],["Athletik","str"],["Arkane Kunde","int"],["Täuschung","cha"],
 ["Geschichte","int"],["Einsicht","wis"],["Einschüchtern","cha"],["Untersuchen","int"],
 ["Natur","int"],["Wahrnehmung","wis"],["Auftreten","cha"],["Überreden","cha"],
-["Heilkunde","wis"],["Heimlichkeit","dex"],["Überleben","wis"]
-];
+["Heilkunde","wis"],["Heimlichkeit","dex"],["Überleben","wis"]];
 let skillProficiencies = Array(skillData.length).fill(false);
-let level = 1;
+let level = parseInt(document.getElementById("level").innerText);
 let proficiencyBonus = 2;
 
 function calcSkillMod(statKey, proficient=false){
-    let mod = calcMod(stats[statKey]);
+    let val = parseInt(document.getElementById(statKey).innerText)||0;
+    let mod = calcMod(val);
     if(proficient) mod += proficiencyBonus;
     return mod;
 }
@@ -291,67 +183,59 @@ function toggleProficiency(index){
 }
 renderSkills();
 
-/* Style System */
+// Style System
 let style = 0;
 let ranks = ["D","C","B","A","S","SS","SSS"];
 function addStyle(){if(style<6) style++; document.getElementById("rank").innerText=ranks[style];}
 function resetStyle(){style=0; document.getElementById("rank").innerText=ranks[style];}
 
-/* Devil Trigger */
+// Devil Trigger
 let devilOn=false;
 function toggleDevil(){
-    let main = document.getElementById("main");
-    let text = document.getElementById("devilText");
-    devilOn=!devilOn;
-    if(devilOn){main.classList.add("devil"); text.innerText="Status: DEVIL TRIGGER";}
-    else{main.classList.remove("devil"); text.innerText="Status: Normal";}
+let main=document.getElementById("main"); let text=document.getElementById("devilText");
+devilOn=!devilOn;
+if(devilOn){main.classList.add("devil"); text.innerText="Status: DEVIL TRIGGER";}
+else{main.classList.remove("devil"); text.innerText="Status: Normal";}
 }
 
-/* Items */
+// Items
 function addItem(){
-    let input = document.getElementById("itemInput");
-    let value = input.value;
-    if(value==="") return;
-    let li = document.createElement("li");
-    li.innerText = value;
-    document.getElementById("itemList").appendChild(li);
-    input.value="";
+let input=document.getElementById("itemInput"); let value=input.value;
+if(value==="") return;
+let li=document.createElement("li"); li.innerText=value;
+document.getElementById("itemList").appendChild(li);
+input.value="";
 }
 
-/* Level-Up + HP */
-let hpMax = 10, hpCurrent = 10;
+// Level-Up + HP
+let hpMax = parseInt(document.getElementById("hpMax").innerText);
+let hpCurrent = parseInt(document.getElementById("hpCurrent").innerText);
+
 function levelUp(){
-    level++;
-    document.getElementById("level").innerText = level;
-    if(level===5) proficiencyBonus=3;
-    else if(level===9) proficiencyBonus=4;
-    else if(level===13) proficiencyBonus=5;
-    else if(level===17) proficiencyBonus=6;
-    document.getElementById("profBonus").innerText = `+${proficiencyBonus}`;
-    // HP erhöhen
-    let conMod = calcMod(stats.con);
-    hpMax += 5 + conMod;
-    hpCurrent = hpMax;
-    updateHpDisplay();
-    renderSkills();
+level++; document.getElementById("level").innerText=level;
+if(level>=1 && level<=4) proficiencyBonus=2;
+else if(level<=8) proficiencyBonus=3;
+else if(level<=12) proficiencyBonus=4;
+else if(level<=16) proficiencyBonus=5;
+else proficiencyBonus=6;
+document.getElementById("profBonus").innerText="+"+proficiencyBonus;
+let conMod = calcMod(parseInt(document.getElementById("con").innerText));
+hpMax += 5 + conMod; hpCurrent=hpMax; updateHpDisplay(); renderSkills();
 }
 
 function updateHpDisplay(){
-    document.getElementById("hpCurrent").innerText = hpCurrent;
-    document.getElementById("hpMax").innerText = hpMax;
-    let fill = document.getElementById("hpFill");
-    fill.style.width = (hpCurrent/hpMax*100) + "%";
+document.getElementById("hpCurrent").innerText=hpCurrent;
+document.getElementById("hpMax").innerText=hpMax;
+document.getElementById("hpFill").style.width=(hpCurrent/hpMax*100)+"%";
 }
 updateHpDisplay();
 
-/* Dice Roller */
+// Dice Roller
 function rollDice(sides){
-    let result = Math.floor(Math.random()*sides)+1;
-    let log = document.getElementById("diceLog");
-    let li = document.createElement("li");
-    li.innerText = `d${sides}: ${result}`;
-    log.appendChild(li);
-    log.scrollTop = log.scrollHeight;
+let result=Math.floor(Math.random()*sides)+1;
+let log=document.getElementById("diceLog");
+let li=document.createElement("li"); li.innerText=`d${sides}: ${result}`;
+log.appendChild(li); log.scrollTop = log.scrollHeight;
 }
 </script>
 </body>
